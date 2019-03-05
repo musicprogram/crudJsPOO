@@ -50,10 +50,25 @@ class UI { /*2) crud en la clase user interface */
 				// boton seleccionado, para poder eliminar solo el elemento de la lista
 			element.parentElement.parentElement.parentElement.remove(); 
 			// con el metodo remove() eliminamos contenido de html	
+
+			// parte del 14) 
+			this.showMessage('producto eliminado satisfactoriamente', 'info'); // llamar el evento this, para la misma clase
 		}
 	}
 	
-	showMessage(){
+	showMessage(message,cssClass){ //13) recibe un mensaje y tambien una clase de bootstrap
+		const div = document.createElement('div'); // se crea un nuevo div , sin nada
+		div.className = `alert alert-${cssClass} mt-2 myMensaje`; // se asigna una clase al div
+		div.appendChild(document.createTextNode(message)); // dentro de este div se va a crear un elemento hijo, texto 
+		// mostrando en el DOM
+		const container = document.querySelector("#container"); // se crea una const con el id container
+		const app = document.querySelector("#app") //selecciona app div
+		container.insertBefore(div, app) // insertar dentro de este contenedor y antes de el div app
+
+		// 14) luego le ponemos un temporizador al mesnaje que aparece
+		setTimeout(function(){ //dos parametros función que queremos ejecutar, y despues el tiempo de espera para ejecutar
+				document.querySelector(".myMensaje").remove(); //remover con el metodo remove()
+		}, 3000);	// ejecutarse en 3 segundos
 
 	}
 }
@@ -93,10 +108,20 @@ function ejecutar(e){ // (evento) se captura el evento
 	// este producto se asigna a un metodo de addProduct de la clase UI  que es la vista
 	// console.log(product)
 	const ui = new UI(); // obtiene los metodos de addProduct
+
+
+	//15) comprobación si los inputs estan vacíos	
+		if(name === '' || last_name === ''){
+			return	ui.showMessage('complete los campos, por favor','danger');	// el return para que no continue con la función
+		}
+
 	ui.addProduct(product); // asigno el producto en los parametros de la vista que los maneja UI
 
 	// esto es parte del 10, donde llama el metodo para resetear formulario
 	ui.resetForm();
+
+	// parte del 13) //desplegar mensaje
+	ui.showMessage('producto agregado satisfactoriamente', 'success'); // funcionando ok
 
 }
 
